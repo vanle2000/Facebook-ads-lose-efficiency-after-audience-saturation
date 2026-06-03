@@ -1,0 +1,42 @@
+# R related
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+.Rprofile
+
+# Environment
+.env
+.Renviron
+renv/
+
+# Data
+data/raw/*
+!data/raw/.gitkeep
+*.csv
+*.xlsx
+*.xls
+
+# Output
+visuals/*.png
+visuals/*.pdf
+*.html
+
+# Cache
+.cache/
+__pycache__/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Model artifacts
+models/
+*.pkl
+*.rds
