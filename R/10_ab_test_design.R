@@ -1,13 +1,11 @@
-# 10_ab_test_design.R
-# Purpose: Design an A/B test to validate model-guided budget allocation
-# Output: Test design, power analysis, sample size calculation, hypothesis
+# I want to design an A/B test to validate model-guided budget allocation
+# Expected output: Test design, power analysis, sample size calculation, hypothesis
 
 library(tidyverse)
 library(dplyr)
 
 cat("=== A/B Test Design for Budget Reallocation ===\n")
 
-# Load data for baseline metrics
 ads_data <- read_csv("data/processed/ads_modeling_table.csv")
 
 # Calculate baseline metrics
@@ -23,14 +21,14 @@ baseline <- ads_data %>%
 cat("\n=== Baseline Metrics ===\n")
 print(baseline)
 
-# Test Design
+# Test design
 cat("\n=== Test Design ===\n")
 cat("Study Type: Randomized Controlled Trial (RCT)\n")
 cat("Duration: 4 weeks\n")
 cat("Allocation: 50% Control, 50% Treatment\n")
 cat("Randomization Unit: Ad segment (age, gender, interest)\n")
 
-# Primary Hypothesis
+# Primary hypothesis H0
 cat("\n=== Hypotheses ===\n")
 cat("H0 (Null): Budget allocation does NOT improve CPA\n")
 cat("Ha (Alternative): Budget allocation IMPROVES (reduces) CPA\n")
@@ -46,10 +44,10 @@ cat("Baseline CPA:", round(baseline$baseline_cpa, 2), "\n")
 cat("Target CPA Reduction:", round(effect_size, 2), "\n")
 cat("Target CPA:", round(baseline$baseline_cpa - effect_size, 2), "\n")
 
-# Sample size calculation (simplified for illustration)
-# Using two-sample t-test formula: n = 2 * (Z_alpha + Z_beta)^2 * sigma^2 / delta^2
+# Sample size calculation 
+# Use two-sample t-test: n = 2 * (Z_alpha + Z_beta)^2 * sigma^2 / delta^2
 z_alpha <- 1.96  # 0.05 two-sided
-z_beta <- 0.84   # 0.80 power
+z_beta <- 0.84   
 sd <- baseline$sd_cpa
 
 sample_size_per_group <- ceiling(2 * ((z_alpha + z_beta)^2) * (sd^2) / (effect_size^2))
