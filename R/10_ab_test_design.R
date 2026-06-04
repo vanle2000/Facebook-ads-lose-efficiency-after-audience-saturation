@@ -4,7 +4,7 @@
 library(tidyverse)
 library(dplyr)
 
-cat("=== A/B Test Design for Budget Reallocation ===\n")
+cat("=== A/B Test Design for Budget Reallocation ===\n") 
 
 ads_data <- read_csv("data/processed/ads_modeling_table.csv")
 
