@@ -6,6 +6,7 @@ library(dplyr)
 
 cat("=== A/B Test Design for Budget Reallocation ===\n") 
 
+# load data
 ads_data <- read_csv("data/processed/ads_modeling_table.csv")
 
 # Calculate baseline metrics
