@@ -29,7 +29,7 @@ cat("Duration: 4 weeks\n")
 cat("Allocation: 50% Control, 50% Treatment\n")
 cat("Randomization Unit: Ad segment (age, gender, interest)\n")
 
-# Primary hypothesis H0
+# Primary hypothesis H0 
 cat("\n=== Hypotheses ===\n")
 cat("H0 (Null): Budget allocation does NOT improve CPA\n")
 cat("Ha (Alternative): Budget allocation IMPROVES (reduces) CPA\n")
