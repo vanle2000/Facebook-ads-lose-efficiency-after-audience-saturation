@@ -1,5 +1,4 @@
-# 09_budget_simulator.R
-# Purpose: Simulate budget reallocation from low to high efficiency segments
+# Simulate budget reallocation from low to high efficiency segments
 # Output: Impact analysis on CPA, conversion lift, and spending recommendations
 
 library(tidyverse)
@@ -44,7 +43,7 @@ tier_summary <- segment_performance %>%
 print(tier_summary)
 
 # Simulate budget reallocation
-# Strategy: Move 25% from LOW efficiency to HIGH efficiency
+# Move 25% from LOW efficiency to HIGH efficiency
 reallocation_scenario <- segment_performance %>%
   mutate(
     budget_shift = case_when(
@@ -112,7 +111,7 @@ cat("CPA Improvement:", round((current_cpa - new_cpa), 2), "\n")
 write_csv(reallocation_scenario, "data/processed/budget_reallocation_recommendations.csv")
 cat("\nBudget recommendations saved.\n")
 
-# Visualization: Budget shift
+# Visualize budget shift
 budget_plot <- reallocation_scenario %>%
   group_by(efficiency_tier) %>%
   summarise(
