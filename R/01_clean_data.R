@@ -1,11 +1,9 @@
-# 01_clean_data.R
-# Purpose: Load raw data and perform initial data cleaning
-# Output: Cleaned dataset for feature engineering
+# Load and clean raw dataset for feature engineering
 
 library(tidyverse)
 library(dplyr)
 
-# Load raw data
+# Load raw
 ads_data <- read_csv("data/raw/Facebook_ads_KAG.csv")
 
 # Display basic info
