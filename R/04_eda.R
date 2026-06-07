@@ -1,14 +1,9 @@
-# 04_eda.R
-# Purpose: Exploratory Data Analysis - visualize campaign performance patterns
-# Output: Summary statistics and visualizations
+# Exploratory Data Analysis 
 
 library(tidyverse)
 library(ggplot2)
 
-# Load featured data
 ads_data <- read_csv("data/processed/ads_modeling_table.csv")
-
-cat("=== Exploratory Data Analysis ===\n")
 
 # 1. Summary statistics
 cat("\n--- Overall Metrics ---\n")
@@ -39,7 +34,7 @@ by_age <- ads_data %>%
   )
 print(by_age)
 
-# 3. Visualization: Spend vs Conversions by Campaign
+# 3. Visualization Spend vs Conversions by Campaign
 plot_spend_conversions <- ggplot(ads_data, aes(x = Spent, y = Approved_Conversion, color = age)) +
   geom_point(alpha = 0.6) +
   facet_wrap(~gender) +
@@ -51,11 +46,10 @@ plot_spend_conversions <- ggplot(ads_data, aes(x = Spent, y = Approved_Conversio
   ) +
   theme_minimal() +
   theme(legend.position = "bottom")
-
 ggsave("visuals/spend_vs_conversions.png", plot_spend_conversions, width = 12, height = 8)
 cat("Saved: visuals/spend_vs_conversions.png\n")
 
-# 4. Visualization: Segment Efficiency
+# 4. Visualization Segment Efficiency
 plot_efficiency <- ads_data %>%
   group_by(interest) %>%
   summarise(
@@ -78,5 +72,3 @@ plot_efficiency <- ads_data %>%
 
 ggsave("visuals/segment_efficiency.png", plot_efficiency, width = 10, height = 8)
 cat("Saved: visuals/segment_efficiency.png\n")
-
-cat("\nEDA completed.\n")
