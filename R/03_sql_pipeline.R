@@ -1,11 +1,8 @@
-# 03_sql_pipeline.R
-# Purpose: Execute SQL pipeline for data transformation
-# Dependencies: DuckDB, SQL scripts in sql/
-
+# Running SQL pipeline for data transformation on DuckDB
 library(DBI)
 library(duckdb)
 
-# Initialize DuckDB connection
+# DuckDB connection
 con <- dbConnect(duckdb::duckdb(), ":memory:")
 
 # Execute SQL scripts in sequence
