@@ -1,6 +1,4 @@
-# 02_feature_engineering.R
-# Purpose: Engineer efficiency metrics and campaign features
-# Output: Feature engineering table for modeling
+# Engineer efficiency metrics and campaign features for modeling 
 
 library(tidyverse)
 library(dplyr)
@@ -10,7 +8,6 @@ ads_clean <- read_csv("data/processed/ads_clean.csv")
 
 # Engineer campaign efficiency metrics
 ads_featured <- ads_clean %>%
-  # Campaign-level aggregations
   group_by(xyz_campaign_id) %>%
   mutate(
     campaign_total_spend = sum(Spent, na.rm = TRUE),
@@ -37,10 +34,10 @@ ads_featured <- ads_clean %>%
     # Conversion Rate
     conversion_rate = ifelse(Total_Conversion > 0, Approved_Conversion / Total_Conversion, 0),
     
-    # Efficiency score (inverse of CPA, normalized)
+    # Efficiency score
     efficiency_score = ifelse(is.finite(cpa), 1 / (1 + cpa), 0),
     
-    # Return on Ad Spend (ROAS) - approximated
+    # Return on Ad Spend (ROAS)
     roas = ifelse(Spent > 0, (Approved_Conversion * Spent) / Spent, 0),
     
     # Engagement rate
@@ -68,6 +65,6 @@ cat("- ROAS (Return on Ad Spend)\n")
 cat("- Engagement Rate\n")
 cat("- Budget Efficiency Ratio\n")
 
-# Save featured dataset
+# Save featured dataset into 'ads_modeling_table.csv'
 write_csv(ads_featured, "data/processed/ads_modeling_table.csv")
 cat("\nFeatured dataset saved to data/processed/ads_modeling_table.csv\n")
