@@ -1,5 +1,4 @@
-# dashboard/app.R
-# Purpose: Interactive Shiny dashboard for campaign monitoring and recommendations
+Interactive Shiny dashboard for campaign monitoring and recommendations
 # Features: KPI tracking, segment efficiency view, budget recommendations, model insights
 
 library(shiny)
@@ -10,7 +9,7 @@ library(plotly)
 
 # Load processed data
 ads_data <- read_csv("../data/processed/ads_modeling_table.csv")
-recommendations <- read_csv("../data/processed/budget_reallocation_recommendations.csv")
+recommendations <- read_csv("../data/processed/segment_efficiency.csv")
 
 # UI
 ui <- fluidPage(
@@ -99,13 +98,21 @@ server <- function(input, output) {
   output$avg_cpa <- renderText({
     spend <- sum(filtered_data()$Spent, na.rm = TRUE)
     convs <- sum(filtered_data()$Approved_Conversion, na.rm = TRUE)
-    paste("$", round(spend / convs, 2))
+    if (convs == 0) {
+      paste("$", "N/A")
+    } else {
+      paste("$", round(spend / convs, 2))
+    }
   })
   
   output$overall_ctr <- renderText({
     clicks <- sum(filtered_data()$Clicks, na.rm = TRUE)
     impr <- sum(filtered_data()$Impressions, na.rm = TRUE)
-    paste(round((clicks / impr) * 100, 2), "%")
+    if (impr == 0) {
+      paste("N/A %")
+    } else {
+      paste(round((clicks / impr) * 100, 2), "%")
+    }
   })
   
   # Plots
@@ -179,35 +186,35 @@ server <- function(input, output) {
   })
   
   # Reallocation plot
-  output$reallocation_plot <- renderPlotly({
-    tier_data <- recommendations %>%
-      group_by(efficiency_tier) %>%
-      summarise(
-        Current = sum(Total_Spend),
-        Proposed = sum(new_spend),
+  outputBudget_by_Tier = sum(Spent),
         .groups = "drop"
       ) %>%
-      pivot_longer(-efficiency_tier, names_to = "Scenario", values_to = "Spend")
+      arrange(desc(Budget_by_Tier))
     
     p <- tier_data %>%
+      ggplot(aes(x = reorder(efficiency_tier, Budget_by_Tier), y = Budget_by_Tier, fill = efficiency_tier)) +
+      geom_col() +
+      labs(title = "Budget Allocation by Efficiency Tier", x = "Efficiency Tier", y = "Total Spend ($)", fill = "Tier") +
+      theme_minimal() +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1)>%
       ggplot(aes(x = efficiency_tier, y = Spend, fill = Scenario)) +
       geom_col(position = "dodge") +
       labs(title = "Budget Reallocation", x = "Tier", y = "Spend", fill = "Scenario") +
       theme_minimal()
     ggplotly(p)
   })
-  
-  # Reduce/Increase tables
-  output$reduce_table <- renderDataTable({
-    recommendations %>%
-      filter(efficiency_tier == "LOW") %>%
-      arrange(desc(Total_Spend)) %>%
+  _EFFICIENCY") %>%
+      arrange(desc(Spent)) %>%
       head(5) %>%
-      select(interest, age, gender, Total_Spend, Avg_CPA)
+      select(interest, age, gender, Spent, cpa)
   })
   
   output$increase_table <- renderDataTable({
     recommendations %>%
+      filter(efficiency_tier == "HIGH_EFFICIENCY") %>%
+      arrange(cpa) %>%
+      head(5) %>%
+      select(interest, age, gender, Spent, cpa
       filter(efficiency_tier == "HIGH") %>%
       arrange(Avg_CPA) %>%
       head(5) %>%
