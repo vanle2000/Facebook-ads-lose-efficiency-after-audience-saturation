@@ -40,3 +40,9 @@ Thumbs.db
 models/
 *.pkl
 *.rds
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
